@@ -12,6 +12,7 @@ import type { ExtractedDocument, PatientRecord, Priority, RedFlag, TimelineEvent
 import { seedPatients, uid, extractDocument, timelineFromDocuments } from "./mockData";
 import { buildSummary, summaryToText } from "./summary";
 import { detectRedFlags, priorityFromFlags } from "./engine";
+import { assignAppointment } from "./assignment";
 
 const STORAGE_KEY = "medikiosk-store-v1";
 
