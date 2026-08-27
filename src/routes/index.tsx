@@ -15,7 +15,7 @@ import { FeatureCard } from "@/components/medikiosk/FeatureCard";
 import { ImpactCalculator } from "@/components/medikiosk/ImpactCalculator";
 import { LANGUAGES } from "@/lib/medikiosk/types";
 
-export const Route = createFileRoute("/_authenticated/")({
+export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "MediKiosk — AI Patient Intake Before the Consultation" },

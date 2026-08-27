@@ -7,7 +7,7 @@ import { useMediKiosk } from "@/lib/medikiosk/store";
 import { DEMO_SCENARIOS } from "@/lib/medikiosk/mockData";
 import { COMPLAINTS } from "@/lib/medikiosk/engine";
 
-export const Route = createFileRoute("/_authenticated/demo")({
+export const Route = createFileRoute("/_authenticated/_staff/demo")({
   head: () => ({
     meta: [
       { title: "Demo Scenarios — MediKiosk" },
