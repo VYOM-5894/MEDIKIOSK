@@ -9,15 +9,20 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
-import { Route as AuthenticatedIndexRouteImport } from './routes/_authenticated/index'
-import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
-import { Route as AuthenticatedDemoRouteImport } from './routes/_authenticated/demo'
-import { Route as AuthenticatedDoctorRouteImport } from './routes/_authenticated/doctor'
 import { Route as AuthenticatedIntakeRouteImport } from './routes/_authenticated/intake'
-import { Route as AuthenticatedTriageRouteImport } from './routes/_authenticated/triage'
+import { Route as AuthenticatedStaffAdminRouteImport } from './routes/_authenticated/_staff/admin'
+import { Route as AuthenticatedStaffDemoRouteImport } from './routes/_authenticated/_staff/demo'
+import { Route as AuthenticatedStaffDoctorRouteImport } from './routes/_authenticated/_staff/doctor'
+import { Route as AuthenticatedStaffTriageRouteImport } from './routes/_authenticated/_staff/triage'
 
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
   id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
@@ -27,91 +32,96 @@ const AuthRoute = AuthRouteImport.update({
   path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedIndexRoute = AuthenticatedIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
-const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
-  id: '/admin',
-  path: '/admin',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
-const AuthenticatedDemoRoute = AuthenticatedDemoRouteImport.update({
-  id: '/demo',
-  path: '/demo',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
-const AuthenticatedDoctorRoute = AuthenticatedDoctorRouteImport.update({
-  id: '/doctor',
-  path: '/doctor',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
 const AuthenticatedIntakeRoute = AuthenticatedIntakeRouteImport.update({
   id: '/intake',
   path: '/intake',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const AuthenticatedTriageRoute = AuthenticatedTriageRouteImport.update({
-  id: '/triage',
-  path: '/triage',
+const AuthenticatedStaffAdminRoute = AuthenticatedStaffAdminRouteImport.update({
+  id: '/_staff/admin',
+  path: '/admin',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedStaffDemoRoute = AuthenticatedStaffDemoRouteImport.update({
+  id: '/_staff/demo',
+  path: '/demo',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedStaffDoctorRoute =
+  AuthenticatedStaffDoctorRouteImport.update({
+    id: '/_staff/doctor',
+    path: '/doctor',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedStaffTriageRoute =
+  AuthenticatedStaffTriageRouteImport.update({
+    id: '/_staff/triage',
+    path: '/triage',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof AuthenticatedIndexRoute
+  '/': typeof IndexRoute
   '/auth': typeof AuthRoute
-  '/admin': typeof AuthenticatedAdminRoute
-  '/demo': typeof AuthenticatedDemoRoute
-  '/doctor': typeof AuthenticatedDoctorRoute
   '/intake': typeof AuthenticatedIntakeRoute
-  '/triage': typeof AuthenticatedTriageRoute
+  '/admin': typeof AuthenticatedStaffAdminRoute
+  '/demo': typeof AuthenticatedStaffDemoRoute
+  '/doctor': typeof AuthenticatedStaffDoctorRoute
+  '/triage': typeof AuthenticatedStaffTriageRoute
 }
 export interface FileRoutesByTo {
+  '/': typeof IndexRoute
   '/auth': typeof AuthRoute
-  '/admin': typeof AuthenticatedAdminRoute
-  '/demo': typeof AuthenticatedDemoRoute
-  '/doctor': typeof AuthenticatedDoctorRoute
   '/intake': typeof AuthenticatedIntakeRoute
-  '/triage': typeof AuthenticatedTriageRoute
-  '/': typeof AuthenticatedIndexRoute
+  '/admin': typeof AuthenticatedStaffAdminRoute
+  '/demo': typeof AuthenticatedStaffDemoRoute
+  '/doctor': typeof AuthenticatedStaffDoctorRoute
+  '/triage': typeof AuthenticatedStaffTriageRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
-  '/_authenticated/admin': typeof AuthenticatedAdminRoute
-  '/_authenticated/demo': typeof AuthenticatedDemoRoute
-  '/_authenticated/doctor': typeof AuthenticatedDoctorRoute
   '/_authenticated/intake': typeof AuthenticatedIntakeRoute
-  '/_authenticated/triage': typeof AuthenticatedTriageRoute
-  '/_authenticated/': typeof AuthenticatedIndexRoute
+  '/_authenticated/_staff/admin': typeof AuthenticatedStaffAdminRoute
+  '/_authenticated/_staff/demo': typeof AuthenticatedStaffDemoRoute
+  '/_authenticated/_staff/doctor': typeof AuthenticatedStaffDoctorRoute
+  '/_authenticated/_staff/triage': typeof AuthenticatedStaffTriageRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/auth' | '/admin' | '/demo' | '/doctor' | '/intake' | '/triage'
+    '/' | '/auth' | '/intake' | '/admin' | '/demo' | '/doctor' | '/triage'
   fileRoutesByTo: FileRoutesByTo
-  to: '/auth' | '/admin' | '/demo' | '/doctor' | '/intake' | '/triage' | '/'
+  to: '/' | '/auth' | '/intake' | '/admin' | '/demo' | '/doctor' | '/triage'
   id:
     | '__root__'
+    | '/'
     | '/_authenticated'
     | '/auth'
-    | '/_authenticated/admin'
-    | '/_authenticated/demo'
-    | '/_authenticated/doctor'
     | '/_authenticated/intake'
-    | '/_authenticated/triage'
-    | '/_authenticated/'
+    | '/_authenticated/_staff/admin'
+    | '/_authenticated/_staff/demo'
+    | '/_authenticated/_staff/doctor'
+    | '/_authenticated/_staff/triage'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
+  IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authenticated': {
       id: '/_authenticated'
       path: ''
@@ -126,34 +136,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/': {
-      id: '/_authenticated/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof AuthenticatedIndexRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/admin': {
-      id: '/_authenticated/admin'
-      path: '/admin'
-      fullPath: '/admin'
-      preLoaderRoute: typeof AuthenticatedAdminRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/demo': {
-      id: '/_authenticated/demo'
-      path: '/demo'
-      fullPath: '/demo'
-      preLoaderRoute: typeof AuthenticatedDemoRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/doctor': {
-      id: '/_authenticated/doctor'
-      path: '/doctor'
-      fullPath: '/doctor'
-      preLoaderRoute: typeof AuthenticatedDoctorRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
     '/_authenticated/intake': {
       id: '/_authenticated/intake'
       path: '/intake'
@@ -161,38 +143,58 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedIntakeRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/triage': {
-      id: '/_authenticated/triage'
+    '/_authenticated/_staff/admin': {
+      id: '/_authenticated/_staff/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthenticatedStaffAdminRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/_staff/demo': {
+      id: '/_authenticated/_staff/demo'
+      path: '/demo'
+      fullPath: '/demo'
+      preLoaderRoute: typeof AuthenticatedStaffDemoRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/_staff/doctor': {
+      id: '/_authenticated/_staff/doctor'
+      path: '/doctor'
+      fullPath: '/doctor'
+      preLoaderRoute: typeof AuthenticatedStaffDoctorRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/_staff/triage': {
+      id: '/_authenticated/_staff/triage'
       path: '/triage'
       fullPath: '/triage'
-      preLoaderRoute: typeof AuthenticatedTriageRouteImport
+      preLoaderRoute: typeof AuthenticatedStaffTriageRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
   }
 }
 
 interface AuthenticatedRouteRouteChildren {
-  AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
-  AuthenticatedDemoRoute: typeof AuthenticatedDemoRoute
-  AuthenticatedDoctorRoute: typeof AuthenticatedDoctorRoute
   AuthenticatedIntakeRoute: typeof AuthenticatedIntakeRoute
-  AuthenticatedTriageRoute: typeof AuthenticatedTriageRoute
-  AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
+  AuthenticatedStaffAdminRoute: typeof AuthenticatedStaffAdminRoute
+  AuthenticatedStaffDemoRoute: typeof AuthenticatedStaffDemoRoute
+  AuthenticatedStaffDoctorRoute: typeof AuthenticatedStaffDoctorRoute
+  AuthenticatedStaffTriageRoute: typeof AuthenticatedStaffTriageRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
-  AuthenticatedAdminRoute: AuthenticatedAdminRoute,
-  AuthenticatedDemoRoute: AuthenticatedDemoRoute,
-  AuthenticatedDoctorRoute: AuthenticatedDoctorRoute,
   AuthenticatedIntakeRoute: AuthenticatedIntakeRoute,
-  AuthenticatedTriageRoute: AuthenticatedTriageRoute,
-  AuthenticatedIndexRoute: AuthenticatedIndexRoute,
+  AuthenticatedStaffAdminRoute: AuthenticatedStaffAdminRoute,
+  AuthenticatedStaffDemoRoute: AuthenticatedStaffDemoRoute,
+  AuthenticatedStaffDoctorRoute: AuthenticatedStaffDoctorRoute,
+  AuthenticatedStaffTriageRoute: AuthenticatedStaffTriageRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
   AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
+  IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
 }
