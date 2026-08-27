@@ -10,14 +10,17 @@ export function SummaryView({ patient, lang = "en" }: { patient: PatientRecord; 
 
   return (
     <div className="space-y-4">
-      <Card className="border-emergency/20 bg-emergency/5">
-        <CardContent className="flex items-start gap-3 py-4">
-          <AlertCircle className="mt-0.5 h-5 w-5 shrink-0 text-emergency" />
-          <div>
-            <div className="font-semibold text-emergency">{t("emergencyDetected", lang)} — {t("emergencyNotice", lang)}</div>
-          </div>
-        </CardContent>
-      </Card>
+      {patient.redFlags.length > 0 && (
+        <Card className="border-emergency/20 bg-emergency/5">
+          <CardContent className="flex items-start gap-3 py-4">
+            <AlertCircle className="mt-0.5 h-5 w-5 shrink-0 text-emergency" />
+            <div>
+              <div className="font-semibold text-emergency">{t("emergencyDetected", lang)} — {t("emergencyNotice", lang)}</div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
 
       <div className="flex items-center gap-2 text-sm text-muted-foreground">
         <FileText className="h-4 w-4" />
