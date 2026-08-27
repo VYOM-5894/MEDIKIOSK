@@ -41,6 +41,33 @@ export type Database = {
         }
         Relationships: []
       }
+      staff_access_codes: {
+        Row: {
+          active: boolean
+          code: string
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          code: string
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          code?: string
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          updated_at?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -74,9 +101,13 @@ export type Database = {
         }
         Returns: boolean
       }
+      redeem_staff_code: {
+        Args: { _code: string }
+        Returns: Database["public"]["Enums"]["app_role"]
+      }
     }
     Enums: {
-      app_role: "admin" | "doctor" | "triage" | "staff"
+      app_role: "admin" | "doctor" | "triage" | "staff" | "patient"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -204,7 +235,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      app_role: ["admin", "doctor", "triage", "staff"],
+      app_role: ["admin", "doctor", "triage", "staff", "patient"],
     },
   },
 } as const
