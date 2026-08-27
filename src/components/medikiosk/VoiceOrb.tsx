@@ -3,6 +3,19 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
+interface SpeechRecognitionLike {
+  continuous: boolean;
+  interimResults: boolean;
+  lang: string;
+  onstart: (() => void) | null;
+  onend: (() => void) | null;
+  onresult: ((event: any) => void) | null;
+  onerror: ((event: any) => void) | null;
+  start: () => void;
+  stop: () => void;
+}
+type SpeechRecognitionCtor = new () => SpeechRecognitionLike;
+
 interface VoiceOrbProps {
   listening: boolean;
   transcript: string;
@@ -55,7 +68,7 @@ export function VoiceOrb({ listening, transcript, onToggle, onSwitchToType, lang
 export function useSpeech({ lang = "en-IN", onResult }: { lang?: string; onResult: (text: string) => void }) {
   const [listening, setListening] = useState(false);
   const [transcript, setTranscript] = useState("");
-  const recognitionRef = useRef<SpeechRecognition | null>(null);
+  const recognitionRef = useRef<SpeechRecognitionLike | null>(null);
 
   const stop = useCallback(() => {
     recognitionRef.current?.stop();
@@ -64,8 +77,8 @@ export function useSpeech({ lang = "en-IN", onResult }: { lang?: string; onResul
 
   const start = useCallback(() => {
     if (typeof window === "undefined") return;
-    const SR = (window as unknown as { SpeechRecognition?: typeof SpeechRecognition; webkitSpeechRecognition?: typeof SpeechRecognition }).SpeechRecognition ||
-      (window as unknown as { webkitSpeechRecognition?: typeof SpeechRecognition }).webkitSpeechRecognition;
+    const w = window as unknown as { SpeechRecognition?: SpeechRecognitionCtor; webkitSpeechRecognition?: SpeechRecognitionCtor };
+    const SR = w.SpeechRecognition || w.webkitSpeechRecognition;
     if (!SR) return;
 
     const rec = new SR();
@@ -74,13 +87,13 @@ export function useSpeech({ lang = "en-IN", onResult }: { lang?: string; onResul
     rec.lang = lang;
     rec.onstart = () => setListening(true);
     rec.onend = () => setListening(false);
-    rec.onresult = (event: SpeechRecognitionEvent) => {
+    rec.onresult = (event: any) => {
       let interim = "";
       let final = "";
       for (let i = event.resultIndex; i < event.results.length; i++) {
         const r = event.results[i]!;
-        if (r.isFinal) final += r[0].transcript;
-        else interim += r[0].transcript;
+        if (r.isFinal) final += r[0]!.transcript;
+        else interim += r[0]!.transcript;
       }
       setTranscript(interim || final);
       if (final) {

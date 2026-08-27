@@ -92,7 +92,7 @@ export function MediKioskProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const startPatient = useCallback(
-    (partial): PatientRecord => {
+    (partial: Partial<PatientRecord> & Pick<PatientRecord, "name" | "age" | "gender" | "language" | "mode">): PatientRecord => {
       const patient: PatientRecord = {
         id: uid("pt"),
         token: `OPD-${String(Math.floor(Math.random() * 900) + 100)}`,
