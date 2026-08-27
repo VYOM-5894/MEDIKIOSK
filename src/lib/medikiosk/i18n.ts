@@ -1,4 +1,5 @@
 import type { LanguageCode } from "./types";
+export type { LanguageCode };
 
 const dictionary: Record<LanguageCode, Record<string, string>> = {
   en: {
