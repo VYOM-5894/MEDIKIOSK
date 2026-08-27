@@ -166,9 +166,12 @@ function AdminPage() {
         </CardContent>
       </Card>
 
+      <StaffCodesPanel />
+
       <p className="mt-8 text-center text-xs text-muted-foreground">
         Average intake duration: {Math.floor(stats.avg / 60)}m {stats.avg % 60}s
       </p>
+
     </div>
   );
 }
