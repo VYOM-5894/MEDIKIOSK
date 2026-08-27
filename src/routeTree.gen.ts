@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AuthenticatedStaffRouteRouteImport } from './routes/_authenticated/_staff/route'
 import { Route as AuthenticatedIntakeRouteImport } from './routes/_authenticated/intake'
 import { Route as AuthenticatedStaffAdminRouteImport } from './routes/_authenticated/_staff/admin'
 import { Route as AuthenticatedStaffDemoRouteImport } from './routes/_authenticated/_staff/demo'
@@ -32,32 +33,36 @@ const AuthRoute = AuthRouteImport.update({
   path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedStaffRouteRoute = AuthenticatedStaffRouteRouteImport.update({
+  id: '/_staff',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedIntakeRoute = AuthenticatedIntakeRouteImport.update({
   id: '/intake',
   path: '/intake',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedStaffAdminRoute = AuthenticatedStaffAdminRouteImport.update({
-  id: '/_staff/admin',
+  id: '/admin',
   path: '/admin',
-  getParentRoute: () => AuthenticatedRouteRoute,
+  getParentRoute: () => AuthenticatedStaffRouteRoute,
 } as any)
 const AuthenticatedStaffDemoRoute = AuthenticatedStaffDemoRouteImport.update({
-  id: '/_staff/demo',
+  id: '/demo',
   path: '/demo',
-  getParentRoute: () => AuthenticatedRouteRoute,
+  getParentRoute: () => AuthenticatedStaffRouteRoute,
 } as any)
 const AuthenticatedStaffDoctorRoute =
   AuthenticatedStaffDoctorRouteImport.update({
-    id: '/_staff/doctor',
+    id: '/doctor',
     path: '/doctor',
-    getParentRoute: () => AuthenticatedRouteRoute,
+    getParentRoute: () => AuthenticatedStaffRouteRoute,
   } as any)
 const AuthenticatedStaffTriageRoute =
   AuthenticatedStaffTriageRouteImport.update({
-    id: '/_staff/triage',
+    id: '/triage',
     path: '/triage',
-    getParentRoute: () => AuthenticatedRouteRoute,
+    getParentRoute: () => AuthenticatedStaffRouteRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
@@ -83,6 +88,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
+  '/_authenticated/_staff': typeof AuthenticatedStaffRouteRouteWithChildren
   '/_authenticated/intake': typeof AuthenticatedIntakeRoute
   '/_authenticated/_staff/admin': typeof AuthenticatedStaffAdminRoute
   '/_authenticated/_staff/demo': typeof AuthenticatedStaffDemoRoute
@@ -100,6 +106,7 @@ export interface FileRouteTypes {
     | '/'
     | '/_authenticated'
     | '/auth'
+    | '/_authenticated/_staff'
     | '/_authenticated/intake'
     | '/_authenticated/_staff/admin'
     | '/_authenticated/_staff/demo'
@@ -136,6 +143,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/_staff': {
+      id: '/_authenticated/_staff'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedStaffRouteRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/intake': {
       id: '/_authenticated/intake'
       path: '/intake'
@@ -148,46 +162,60 @@ declare module '@tanstack/react-router' {
       path: '/admin'
       fullPath: '/admin'
       preLoaderRoute: typeof AuthenticatedStaffAdminRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
+      parentRoute: typeof AuthenticatedStaffRouteRoute
     }
     '/_authenticated/_staff/demo': {
       id: '/_authenticated/_staff/demo'
       path: '/demo'
       fullPath: '/demo'
       preLoaderRoute: typeof AuthenticatedStaffDemoRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
+      parentRoute: typeof AuthenticatedStaffRouteRoute
     }
     '/_authenticated/_staff/doctor': {
       id: '/_authenticated/_staff/doctor'
       path: '/doctor'
       fullPath: '/doctor'
       preLoaderRoute: typeof AuthenticatedStaffDoctorRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
+      parentRoute: typeof AuthenticatedStaffRouteRoute
     }
     '/_authenticated/_staff/triage': {
       id: '/_authenticated/_staff/triage'
       path: '/triage'
       fullPath: '/triage'
       preLoaderRoute: typeof AuthenticatedStaffTriageRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
+      parentRoute: typeof AuthenticatedStaffRouteRoute
     }
   }
 }
 
-interface AuthenticatedRouteRouteChildren {
-  AuthenticatedIntakeRoute: typeof AuthenticatedIntakeRoute
+interface AuthenticatedStaffRouteRouteChildren {
   AuthenticatedStaffAdminRoute: typeof AuthenticatedStaffAdminRoute
   AuthenticatedStaffDemoRoute: typeof AuthenticatedStaffDemoRoute
   AuthenticatedStaffDoctorRoute: typeof AuthenticatedStaffDoctorRoute
   AuthenticatedStaffTriageRoute: typeof AuthenticatedStaffTriageRoute
 }
 
+const AuthenticatedStaffRouteRouteChildren: AuthenticatedStaffRouteRouteChildren =
+  {
+    AuthenticatedStaffAdminRoute: AuthenticatedStaffAdminRoute,
+    AuthenticatedStaffDemoRoute: AuthenticatedStaffDemoRoute,
+    AuthenticatedStaffDoctorRoute: AuthenticatedStaffDoctorRoute,
+    AuthenticatedStaffTriageRoute: AuthenticatedStaffTriageRoute,
+  }
+
+const AuthenticatedStaffRouteRouteWithChildren =
+  AuthenticatedStaffRouteRoute._addFileChildren(
+    AuthenticatedStaffRouteRouteChildren,
+  )
+
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedStaffRouteRoute: typeof AuthenticatedStaffRouteRouteWithChildren
+  AuthenticatedIntakeRoute: typeof AuthenticatedIntakeRoute
+}
+
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedStaffRouteRoute: AuthenticatedStaffRouteRouteWithChildren,
   AuthenticatedIntakeRoute: AuthenticatedIntakeRoute,
-  AuthenticatedStaffAdminRoute: AuthenticatedStaffAdminRoute,
-  AuthenticatedStaffDemoRoute: AuthenticatedStaffDemoRoute,
-  AuthenticatedStaffDoctorRoute: AuthenticatedStaffDoctorRoute,
-  AuthenticatedStaffTriageRoute: AuthenticatedStaffTriageRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
