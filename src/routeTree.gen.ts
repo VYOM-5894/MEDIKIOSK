@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as StaffAuthRouteImport } from './routes/staff-auth'
 import { Route as AuthenticatedStaffRouteRouteImport } from './routes/_authenticated/_staff/route'
 import { Route as AuthenticatedIntakeRouteImport } from './routes/_authenticated/intake'
 import { Route as AuthenticatedStaffAdminRouteImport } from './routes/_authenticated/_staff/admin'
@@ -31,6 +32,11 @@ const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StaffAuthRoute = StaffAuthRouteImport.update({
+  id: '/staff-auth',
+  path: '/staff-auth',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedStaffRouteRoute = AuthenticatedStaffRouteRouteImport.update({
@@ -68,6 +74,7 @@ const AuthenticatedStaffTriageRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/staff-auth': typeof StaffAuthRoute
   '/intake': typeof AuthenticatedIntakeRoute
   '/admin': typeof AuthenticatedStaffAdminRoute
   '/demo': typeof AuthenticatedStaffDemoRoute
@@ -77,6 +84,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/staff-auth': typeof StaffAuthRoute
   '/intake': typeof AuthenticatedIntakeRoute
   '/admin': typeof AuthenticatedStaffAdminRoute
   '/demo': typeof AuthenticatedStaffDemoRoute
@@ -88,6 +96,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
+  '/staff-auth': typeof StaffAuthRoute
   '/_authenticated/_staff': typeof AuthenticatedStaffRouteRouteWithChildren
   '/_authenticated/intake': typeof AuthenticatedIntakeRoute
   '/_authenticated/_staff/admin': typeof AuthenticatedStaffAdminRoute
@@ -98,14 +107,30 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/auth' | '/intake' | '/admin' | '/demo' | '/doctor' | '/triage'
+    | '/'
+    | '/auth'
+    | '/staff-auth'
+    | '/intake'
+    | '/admin'
+    | '/demo'
+    | '/doctor'
+    | '/triage'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/intake' | '/admin' | '/demo' | '/doctor' | '/triage'
+  to:
+    | '/'
+    | '/auth'
+    | '/staff-auth'
+    | '/intake'
+    | '/admin'
+    | '/demo'
+    | '/doctor'
+    | '/triage'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
     | '/auth'
+    | '/staff-auth'
     | '/_authenticated/_staff'
     | '/_authenticated/intake'
     | '/_authenticated/_staff/admin'
@@ -118,6 +143,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
+  StaffAuthRoute: typeof StaffAuthRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -141,6 +167,13 @@ declare module '@tanstack/react-router' {
       path: '/auth'
       fullPath: '/auth'
       preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/staff-auth': {
+      id: '/staff-auth'
+      path: '/staff-auth'
+      fullPath: '/staff-auth'
+      preLoaderRoute: typeof StaffAuthRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/_staff': {
@@ -225,6 +258,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
+  StaffAuthRoute: StaffAuthRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

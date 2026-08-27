@@ -5,9 +5,11 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
 import { AccessibilityToggle } from "./AccessibilityToggle";
 import { UserMenu } from "./UserMenu";
+import { useAuth } from "@/lib/medikiosk/useAuth";
 
-const nav = [
-  { to: "/intake", label: "Patient Intake", icon: Activity },
+const patientNav = [{ to: "/intake", label: "Patient Intake", icon: Activity }];
+
+const staffNav = [
   { to: "/doctor", label: "Doctor", icon: Stethoscope },
   { to: "/triage", label: "Triage", icon: Tablet },
   { to: "/admin", label: "Admin", icon: UserCog },
@@ -16,6 +18,8 @@ const nav = [
 
 export function Header() {
   const [open, setOpen] = useState(false);
+  const { isStaff } = useAuth();
+  const nav = isStaff ? [...patientNav, ...staffNav] : patientNav;
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/60 bg-card/80 backdrop-blur-md">
@@ -38,6 +42,14 @@ export function Header() {
               {item.label}
             </Link>
           ))}
+          {!isStaff && (
+            <Link
+              to="/staff-auth"
+              className="rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+            >
+              Staff portal
+            </Link>
+          )}
         </nav>
 
         <div className="flex items-center gap-2">
@@ -64,6 +76,16 @@ export function Header() {
                     {item.label}
                   </Link>
                 ))}
+                {!isStaff && (
+                  <Link
+                    to="/staff-auth"
+                    onClick={() => setOpen(false)}
+                    className="flex items-center gap-2 rounded-md px-3 py-3 text-sm font-medium text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+                  >
+                    <Stethoscope className="h-4 w-4" />
+                    Staff portal
+                  </Link>
+                )}
               </div>
             </SheetContent>
           </Sheet>
