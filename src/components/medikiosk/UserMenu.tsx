@@ -4,6 +4,7 @@ import { LogOut, User as UserIcon } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/medikiosk/useAuth";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,7 +15,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 export function UserMenu() {
-  const { user, loading } = useAuth();
+  const { user, roles, isStaff, loading } = useAuth();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
@@ -29,13 +30,15 @@ export function UserMenu() {
   }
 
   async function handleSignOut() {
+    const destination = isStaff ? "/staff-auth" : "/auth";
     await queryClient.cancelQueries();
     queryClient.clear();
     await supabase.auth.signOut();
-    navigate({ to: "/auth", replace: true });
+    navigate({ to: destination, replace: true });
   }
 
   const label = (user.user_metadata?.["full_name"] as string | undefined) ?? user.email ?? "Account";
+  const primaryRole = isStaff ? (roles.find((r) => r !== "patient") ?? "staff") : "patient";
 
   return (
     <DropdownMenu>
@@ -44,8 +47,13 @@ export function UserMenu() {
           <UserIcon className="h-5 w-5" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-56">
-        <DropdownMenuLabel className="truncate">{label}</DropdownMenuLabel>
+      <DropdownMenuContent align="end" className="w-60">
+        <DropdownMenuLabel className="space-y-2">
+          <div className="truncate">{label}</div>
+          <Badge variant={isStaff ? "default" : "secondary"} className="capitalize">
+            {primaryRole}
+          </Badge>
+        </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={handleSignOut}>
           <LogOut className="mr-2 h-4 w-4" />
