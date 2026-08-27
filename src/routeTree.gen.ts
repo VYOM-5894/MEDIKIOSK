@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as DoctorRouteImport } from './routes/doctor'
 import { Route as IntakeRouteImport } from './routes/intake'
 import { Route as TriageRouteImport } from './routes/triage'
@@ -17,6 +18,11 @@ import { Route as TriageRouteImport } from './routes/triage'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DoctorRoute = DoctorRouteImport.update({
@@ -37,12 +43,14 @@ const TriageRoute = TriageRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/doctor': typeof DoctorRoute
   '/intake': typeof IntakeRoute
   '/triage': typeof TriageRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/doctor': typeof DoctorRoute
   '/intake': typeof IntakeRoute
   '/triage': typeof TriageRoute
@@ -50,20 +58,22 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/doctor': typeof DoctorRoute
   '/intake': typeof IntakeRoute
   '/triage': typeof TriageRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/doctor' | '/intake' | '/triage'
+  fullPaths: '/' | '/admin' | '/doctor' | '/intake' | '/triage'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/doctor' | '/intake' | '/triage'
-  id: '__root__' | '/' | '/doctor' | '/intake' | '/triage'
+  to: '/' | '/admin' | '/doctor' | '/intake' | '/triage'
+  id: '__root__' | '/' | '/admin' | '/doctor' | '/intake' | '/triage'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRoute: typeof AdminRoute
   DoctorRoute: typeof DoctorRoute
   IntakeRoute: typeof IntakeRoute
   TriageRoute: typeof TriageRoute
@@ -76,6 +86,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/doctor': {
@@ -104,6 +121,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRoute: AdminRoute,
   DoctorRoute: DoctorRoute,
   IntakeRoute: IntakeRoute,
   TriageRoute: TriageRoute,
