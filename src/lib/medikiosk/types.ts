@@ -98,6 +98,7 @@ export interface PatientRecord {
   intakeSeconds: number;
   inputMode: "voice" | "touch";
   abdm: { abhaLinked: boolean; consentVerified: boolean; recordReady: boolean };
+  assignment?: import("./assignment").Assignment | null;
 }
 
 export const LANGUAGES: { code: LanguageCode; label: string; native: string; flag: string }[] = [

@@ -12,6 +12,7 @@ import type { ExtractedDocument, PatientRecord, Priority, RedFlag, TimelineEvent
 import { seedPatients, uid, extractDocument, timelineFromDocuments } from "./mockData";
 import { buildSummary, summaryToText } from "./summary";
 import { detectRedFlags, priorityFromFlags } from "./engine";
+import { assignAppointment } from "./assignment";
 
 const STORAGE_KEY = "medikiosk-store-v1";
 
@@ -225,7 +226,16 @@ export function MediKioskProvider({ children }: { children: ReactNode }) {
   const approveSummary = useCallback((id: string) => {
     setState((s) => ({
       ...s,
-      patients: s.patients.map((p) => (p.id === id ? { ...p, status: "approved" as PatientRecord["status"] } : p)),
+      patients: s.patients.map((p) =>
+        p.id === id
+          ? {
+              ...p,
+              status: "approved" as PatientRecord["status"],
+              completedAt: p.completedAt ?? new Date().toISOString(),
+              assignment: p.assignment ?? assignAppointment(p, s.patients),
+            }
+          : p,
+      ),
     }));
   }, []);
 
