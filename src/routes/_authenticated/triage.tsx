@@ -7,7 +7,7 @@ import { PriorityBadge } from "@/components/medikiosk/PriorityBadge";
 import { useMediKiosk } from "@/lib/medikiosk/store";
 import { cn } from "@/lib/utils";
 
-export const Route = createFileRoute("/triage")({
+export const Route = createFileRoute("/_authenticated/triage")({
   head: () => ({
     meta: [
       { title: "Triage Board — MediKiosk" },

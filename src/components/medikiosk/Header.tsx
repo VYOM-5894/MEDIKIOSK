@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
 import { AccessibilityToggle } from "./AccessibilityToggle";
+import { UserMenu } from "./UserMenu";
 
 const nav = [
   { to: "/intake", label: "Patient Intake", icon: Activity },
@@ -41,6 +42,7 @@ export function Header() {
 
         <div className="flex items-center gap-2">
           <AccessibilityToggle />
+          <UserMenu />
           <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild className="md:hidden">
               <Button variant="ghost" size="icon" aria-label="Open menu">

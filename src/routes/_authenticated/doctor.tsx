@@ -13,7 +13,7 @@ import { Timeline } from "@/components/medikiosk/Timeline";
 import { PriorityBadge } from "@/components/medikiosk/PriorityBadge";
 import { useMediKiosk, summaryToText } from "@/lib/medikiosk/store";
 
-export const Route = createFileRoute("/doctor")({
+export const Route = createFileRoute("/_authenticated/doctor")({
   head: () => ({
     meta: [
       { title: "Doctor Dashboard — MediKiosk" },
