@@ -5,6 +5,8 @@ import { Clock, FileScan, Languages, Leaf, RotateCcw, Siren, Users } from "lucid
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { MetricCard } from "@/components/medikiosk/MetricCard";
+import { StaffCodesPanel } from "@/components/medikiosk/StaffCodesPanel";
+
 import { useMediKiosk } from "@/lib/medikiosk/store";
 import { LANGUAGES } from "@/lib/medikiosk/types";
 
