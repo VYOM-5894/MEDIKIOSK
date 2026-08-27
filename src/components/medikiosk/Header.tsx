@@ -7,7 +7,10 @@ import { AccessibilityToggle } from "./AccessibilityToggle";
 import { UserMenu } from "./UserMenu";
 import { useAuth } from "@/lib/medikiosk/useAuth";
 
-const patientNav = [{ to: "/intake", label: "Patient Intake", icon: Activity }];
+const patientNav = [
+  { to: "/intake", label: "Patient Intake", icon: Activity },
+  { to: "/appointment", label: "My Appointment", icon: CalendarClock },
+];
 
 const staffNav = [
   { to: "/doctor", label: "Doctor", icon: Stethoscope },
