@@ -21,7 +21,7 @@ import { COMPLAINTS, buildQuestionPlan, nextQuestion, assistantAck } from "@/lib
 import { LANGUAGES, type IntakeMode, type LanguageCode } from "@/lib/medikiosk/types";
 import { cn } from "@/lib/utils";
 
-export const Route = createFileRoute("/intake")({
+export const Route = createFileRoute("/_authenticated/intake")({
   head: () => ({
     meta: [
       { title: "Patient Intake — MediKiosk" },

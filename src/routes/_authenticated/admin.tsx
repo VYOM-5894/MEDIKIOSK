@@ -8,7 +8,7 @@ import { MetricCard } from "@/components/medikiosk/MetricCard";
 import { useMediKiosk } from "@/lib/medikiosk/store";
 import { LANGUAGES } from "@/lib/medikiosk/types";
 
-export const Route = createFileRoute("/admin")({
+export const Route = createFileRoute("/_authenticated/admin")({
   head: () => ({
     meta: [
       { title: "Admin Analytics — MediKiosk" },
