@@ -1,6 +1,6 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Activity, Loader2 } from "lucide-react";
+import { HeartPulse, Loader2, ShieldCheck } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable/index";
@@ -18,31 +18,31 @@ export const Route = createFileRoute("/auth")({
   }),
   head: () => ({
     meta: [
-      { title: "Staff Sign In — MediKiosk" },
+      { title: "Patient Sign In — MediKiosk" },
       {
         name: "description",
         content:
-          "Secure sign-in for MediKiosk clinical staff: doctors, triage nurses and administrators.",
+          "Create a MediKiosk patient account to start a multilingual, voice-first intake and keep your visit history in one place.",
       },
-      { property: "og:title", content: "Staff Sign In — MediKiosk" },
+      { property: "og:title", content: "Patient Sign In — MediKiosk" },
       {
         property: "og:description",
-        content: "Secure access to the MediKiosk patient intake and triage platform.",
+        content: "Sign in to begin your kiosk intake before meeting the doctor.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
-  component: AuthPage,
+  component: PatientAuthPage,
 });
 
 function safePath(value: string | undefined) {
-  if (!value) return "/";
-  if (!value.startsWith("/") || value.startsWith("//")) return "/";
+  if (!value) return "/intake";
+  if (!value.startsWith("/") || value.startsWith("//")) return "/intake";
   return value;
 }
 
-function AuthPage() {
+function PatientAuthPage() {
   const navigate = useNavigate();
   const search = Route.useSearch();
   const destination = safePath(search.redirect);
@@ -67,7 +67,7 @@ function AuthPage() {
       toast.error(error.message);
       return;
     }
-    toast.success("Signed in");
+    toast.success("Welcome back");
     navigate({ to: destination, replace: true });
   }
 
@@ -88,7 +88,7 @@ function AuthPage() {
       return;
     }
     if (data.session) {
-      toast.success("Account created");
+      toast.success("Patient account created");
       navigate({ to: destination, replace: true });
     } else {
       toast.success("Check your email to confirm your account");
@@ -114,18 +114,18 @@ function AuthPage() {
       <div className="w-full max-w-md">
         <div className="mb-6 flex flex-col items-center text-center">
           <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary text-primary-foreground">
-            <Activity className="h-6 w-6" />
+            <HeartPulse className="h-6 w-6" />
           </div>
-          <h1 className="mt-4 text-2xl font-bold tracking-tight">MediKiosk staff access</h1>
+          <h1 className="mt-4 text-2xl font-bold tracking-tight">Patient sign in</h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            Sign in to run patient intake, triage and clinical review.
+            Start your intake in your own language — your answers stay with your visit.
           </p>
         </div>
 
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-lg">Welcome</CardTitle>
-            <CardDescription>Use your clinic account or continue with Google.</CardDescription>
+            <CardTitle className="text-lg">Welcome to MediKiosk</CardTitle>
+            <CardDescription>Use your patient account or continue with Google.</CardDescription>
           </CardHeader>
           <CardContent>
             <Button
@@ -144,42 +144,11 @@ function AuthPage() {
               <span className="h-px flex-1 bg-border" />
             </div>
 
-            <Tabs defaultValue="signin">
+            <Tabs defaultValue="signup">
               <TabsList className="grid w-full grid-cols-2">
+                <TabsTrigger value="signup">New patient</TabsTrigger>
                 <TabsTrigger value="signin">Sign in</TabsTrigger>
-                <TabsTrigger value="signup">Create account</TabsTrigger>
               </TabsList>
-
-              <TabsContent value="signin">
-                <form className="mt-4 space-y-4" onSubmit={handleSignIn}>
-                  <div className="space-y-2">
-                    <Label htmlFor="signin-email">Email</Label>
-                    <Input
-                      id="signin-email"
-                      type="email"
-                      autoComplete="email"
-                      required
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="signin-password">Password</Label>
-                    <Input
-                      id="signin-password"
-                      type="password"
-                      autoComplete="current-password"
-                      required
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                    />
-                  </div>
-                  <Button type="submit" className="w-full" disabled={busy}>
-                    {busy && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                    Sign in
-                  </Button>
-                </form>
-              </TabsContent>
 
               <TabsContent value="signup">
                 <form className="mt-4 space-y-4" onSubmit={handleSignUp}>
@@ -217,13 +186,52 @@ function AuthPage() {
                   </div>
                   <Button type="submit" className="w-full" disabled={busy}>
                     {busy && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                    Create account
+                    Create patient account
+                  </Button>
+                </form>
+              </TabsContent>
+
+              <TabsContent value="signin">
+                <form className="mt-4 space-y-4" onSubmit={handleSignIn}>
+                  <div className="space-y-2">
+                    <Label htmlFor="signin-email">Email</Label>
+                    <Input
+                      id="signin-email"
+                      type="email"
+                      autoComplete="email"
+                      required
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="signin-password">Password</Label>
+                    <Input
+                      id="signin-password"
+                      type="password"
+                      autoComplete="current-password"
+                      required
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                    />
+                  </div>
+                  <Button type="submit" className="w-full" disabled={busy}>
+                    {busy && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                    Sign in
                   </Button>
                 </form>
               </TabsContent>
             </Tabs>
           </CardContent>
         </Card>
+
+        <p className="mt-6 flex items-center justify-center gap-2 text-center text-sm text-muted-foreground">
+          <ShieldCheck className="h-4 w-4" />
+          Hospital staff?{" "}
+          <Link to="/staff-auth" className="font-medium text-primary hover:underline">
+            Use the staff portal
+          </Link>
+        </p>
       </div>
     </div>
   );
