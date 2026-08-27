@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthenticatedIndexRouteImport } from './routes/_authenticated/index'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedDemoRouteImport } from './routes/_authenticated/demo'
@@ -16,44 +17,48 @@ import { Route as AuthenticatedDoctorRouteImport } from './routes/_authenticated
 import { Route as AuthenticatedIntakeRouteImport } from './routes/_authenticated/intake'
 import { Route as AuthenticatedTriageRouteImport } from './routes/_authenticated/triage'
 
-const AuthenticatedIndexRoute = AuthenticatedIndexRouteImport.update({
-  id: '/_authenticated/',
-  path: '/',
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedIndexRoute = AuthenticatedIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
-  id: '/_authenticated/admin',
+  id: '/admin',
   path: '/admin',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedDemoRoute = AuthenticatedDemoRouteImport.update({
-  id: '/_authenticated/demo',
+  id: '/demo',
   path: '/demo',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedDoctorRoute = AuthenticatedDoctorRouteImport.update({
-  id: '/_authenticated/doctor',
+  id: '/doctor',
   path: '/doctor',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedIntakeRoute = AuthenticatedIntakeRouteImport.update({
-  id: '/_authenticated/intake',
+  id: '/intake',
   path: '/intake',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedTriageRoute = AuthenticatedTriageRouteImport.update({
-  id: '/_authenticated/triage',
+  id: '/triage',
   path: '/triage',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
+  '/': typeof AuthenticatedIndexRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/demo': typeof AuthenticatedDemoRoute
   '/doctor': typeof AuthenticatedDoctorRoute
   '/intake': typeof AuthenticatedIntakeRoute
   '/triage': typeof AuthenticatedTriageRoute
-  '/': typeof AuthenticatedIndexRoute
 }
 export interface FileRoutesByTo {
   '/admin': typeof AuthenticatedAdminRoute
@@ -65,6 +70,7 @@ export interface FileRoutesByTo {
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/_authenticated/demo': typeof AuthenticatedDemoRoute
   '/_authenticated/doctor': typeof AuthenticatedDoctorRoute
@@ -74,11 +80,12 @@ export interface FileRoutesById {
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/admin' | '/demo' | '/doctor' | '/intake' | '/triage' | '/'
+  fullPaths: '/' | '/admin' | '/demo' | '/doctor' | '/intake' | '/triage'
   fileRoutesByTo: FileRoutesByTo
   to: '/admin' | '/demo' | '/doctor' | '/intake' | '/triage' | '/'
   id:
     | '__root__'
+    | '/_authenticated'
     | '/_authenticated/admin'
     | '/_authenticated/demo'
     | '/_authenticated/doctor'
@@ -88,6 +95,64 @@ export interface FileRouteTypes {
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+}
+
+declare module '@tanstack/react-router' {
+  interface FileRoutesByPath {
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/': {
+      id: '/_authenticated/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/admin': {
+      id: '/_authenticated/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthenticatedAdminRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/demo': {
+      id: '/_authenticated/demo'
+      path: '/demo'
+      fullPath: '/demo'
+      preLoaderRoute: typeof AuthenticatedDemoRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/doctor': {
+      id: '/_authenticated/doctor'
+      path: '/doctor'
+      fullPath: '/doctor'
+      preLoaderRoute: typeof AuthenticatedDoctorRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/intake': {
+      id: '/_authenticated/intake'
+      path: '/intake'
+      fullPath: '/intake'
+      preLoaderRoute: typeof AuthenticatedIntakeRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/triage': {
+      id: '/_authenticated/triage'
+      path: '/triage'
+      fullPath: '/triage'
+      preLoaderRoute: typeof AuthenticatedTriageRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+  }
+}
+
+interface AuthenticatedRouteRouteChildren {
   AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
   AuthenticatedDemoRoute: typeof AuthenticatedDemoRoute
   AuthenticatedDoctorRoute: typeof AuthenticatedDoctorRoute
@@ -96,60 +161,20 @@ export interface RootRouteChildren {
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
 }
 
-declare module '@tanstack/react-router' {
-  interface FileRoutesByPath {
-    '/_authenticated/': {
-      id: '/_authenticated/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof AuthenticatedIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_authenticated/admin': {
-      id: '/_authenticated/admin'
-      path: '/admin'
-      fullPath: '/admin'
-      preLoaderRoute: typeof AuthenticatedAdminRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_authenticated/demo': {
-      id: '/_authenticated/demo'
-      path: '/demo'
-      fullPath: '/demo'
-      preLoaderRoute: typeof AuthenticatedDemoRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_authenticated/doctor': {
-      id: '/_authenticated/doctor'
-      path: '/doctor'
-      fullPath: '/doctor'
-      preLoaderRoute: typeof AuthenticatedDoctorRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_authenticated/intake': {
-      id: '/_authenticated/intake'
-      path: '/intake'
-      fullPath: '/intake'
-      preLoaderRoute: typeof AuthenticatedIntakeRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_authenticated/triage': {
-      id: '/_authenticated/triage'
-      path: '/triage'
-      fullPath: '/triage'
-      preLoaderRoute: typeof AuthenticatedTriageRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-  }
-}
-
-const rootRouteChildren: RootRouteChildren = {
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAdminRoute: AuthenticatedAdminRoute,
   AuthenticatedDemoRoute: AuthenticatedDemoRoute,
   AuthenticatedDoctorRoute: AuthenticatedDoctorRoute,
   AuthenticatedIntakeRoute: AuthenticatedIntakeRoute,
   AuthenticatedTriageRoute: AuthenticatedTriageRoute,
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
+const rootRouteChildren: RootRouteChildren = {
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
