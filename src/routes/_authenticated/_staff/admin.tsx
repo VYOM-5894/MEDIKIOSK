@@ -5,6 +5,8 @@ import { Clock, FileScan, Languages, Leaf, RotateCcw, Siren, Users } from "lucid
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { MetricCard } from "@/components/medikiosk/MetricCard";
+import { StaffCodesPanel } from "@/components/medikiosk/StaffCodesPanel";
+
 import { useMediKiosk } from "@/lib/medikiosk/store";
 import { LANGUAGES } from "@/lib/medikiosk/types";
 
@@ -166,9 +168,12 @@ function AdminPage() {
         </CardContent>
       </Card>
 
+      <StaffCodesPanel />
+
       <p className="mt-8 text-center text-xs text-muted-foreground">
         Average intake duration: {Math.floor(stats.avg / 60)}m {stats.avg % 60}s
       </p>
+
     </div>
   );
 }
