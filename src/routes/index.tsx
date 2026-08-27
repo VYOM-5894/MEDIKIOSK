@@ -52,7 +52,7 @@ function Landing() {
           <div>
             <span className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-primary">
               <Activity className="h-3.5 w-3.5" />
-              Smart India Hackathon · Digital Health
+              SMART INDIA · DIGITAL HEALTH
             </span>
             <h1 className="mt-6 text-4xl font-extrabold leading-tight tracking-tight text-foreground sm:text-5xl lg:text-6xl">
               Your health story, ready before you meet your doctor.
