@@ -343,7 +343,7 @@ function ConversationStep({ onDone }: { onDone: () => void }) {
                 <VoiceOrb
                   listening={speech.listening}
                   transcript={speech.transcript || typed}
-                  onToggle={speech.listening ? speech.stop : speech.start}
+                  onToggle={speech.toggle}
                   onSwitchToType={() => setVoiceMode(false)}
                   label={speech.listening ? "Listening..." : "Tap to speak your answer"}
                 />
