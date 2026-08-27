@@ -14,6 +14,7 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as StaffAuthRouteImport } from './routes/staff-auth'
 import { Route as AuthenticatedStaffRouteRouteImport } from './routes/_authenticated/_staff/route'
+import { Route as AuthenticatedAppointmentRouteImport } from './routes/_authenticated/appointment'
 import { Route as AuthenticatedIntakeRouteImport } from './routes/_authenticated/intake'
 import { Route as AuthenticatedStaffAdminRouteImport } from './routes/_authenticated/_staff/admin'
 import { Route as AuthenticatedStaffDemoRouteImport } from './routes/_authenticated/_staff/demo'
@@ -43,6 +44,12 @@ const AuthenticatedStaffRouteRoute = AuthenticatedStaffRouteRouteImport.update({
   id: '/_staff',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedAppointmentRoute =
+  AuthenticatedAppointmentRouteImport.update({
+    id: '/appointment',
+    path: '/appointment',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedIntakeRoute = AuthenticatedIntakeRouteImport.update({
   id: '/intake',
   path: '/intake',
@@ -75,6 +82,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/staff-auth': typeof StaffAuthRoute
+  '/appointment': typeof AuthenticatedAppointmentRoute
   '/intake': typeof AuthenticatedIntakeRoute
   '/admin': typeof AuthenticatedStaffAdminRoute
   '/demo': typeof AuthenticatedStaffDemoRoute
@@ -85,6 +93,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/staff-auth': typeof StaffAuthRoute
+  '/appointment': typeof AuthenticatedAppointmentRoute
   '/intake': typeof AuthenticatedIntakeRoute
   '/admin': typeof AuthenticatedStaffAdminRoute
   '/demo': typeof AuthenticatedStaffDemoRoute
@@ -98,6 +107,7 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/staff-auth': typeof StaffAuthRoute
   '/_authenticated/_staff': typeof AuthenticatedStaffRouteRouteWithChildren
+  '/_authenticated/appointment': typeof AuthenticatedAppointmentRoute
   '/_authenticated/intake': typeof AuthenticatedIntakeRoute
   '/_authenticated/_staff/admin': typeof AuthenticatedStaffAdminRoute
   '/_authenticated/_staff/demo': typeof AuthenticatedStaffDemoRoute
@@ -110,6 +120,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/staff-auth'
+    | '/appointment'
     | '/intake'
     | '/admin'
     | '/demo'
@@ -120,6 +131,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/staff-auth'
+    | '/appointment'
     | '/intake'
     | '/admin'
     | '/demo'
@@ -132,6 +144,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/staff-auth'
     | '/_authenticated/_staff'
+    | '/_authenticated/appointment'
     | '/_authenticated/intake'
     | '/_authenticated/_staff/admin'
     | '/_authenticated/_staff/demo'
@@ -181,6 +194,13 @@ declare module '@tanstack/react-router' {
       path: ''
       fullPath: '/'
       preLoaderRoute: typeof AuthenticatedStaffRouteRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/appointment': {
+      id: '/_authenticated/appointment'
+      path: '/appointment'
+      fullPath: '/appointment'
+      preLoaderRoute: typeof AuthenticatedAppointmentRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/intake': {
@@ -243,11 +263,13 @@ const AuthenticatedStaffRouteRouteWithChildren =
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedStaffRouteRoute: typeof AuthenticatedStaffRouteRouteWithChildren
+  AuthenticatedAppointmentRoute: typeof AuthenticatedAppointmentRoute
   AuthenticatedIntakeRoute: typeof AuthenticatedIntakeRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedStaffRouteRoute: AuthenticatedStaffRouteRouteWithChildren,
+  AuthenticatedAppointmentRoute: AuthenticatedAppointmentRoute,
   AuthenticatedIntakeRoute: AuthenticatedIntakeRoute,
 }
 
