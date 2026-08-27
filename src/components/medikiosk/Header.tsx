@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Activity, Menu, Stethoscope, Tablet, UserCog } from "lucide-react";
+import { Activity, CalendarClock, Menu, Stethoscope, Tablet, UserCog } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
