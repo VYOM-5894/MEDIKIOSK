@@ -259,3 +259,22 @@
     ),
     linear-gradient(to bottom, color-mix(in oklch, var(--accent) 7%, transparent), transparent 45%);
 }
+
+/* Government-style tricolour rule and serif headings */
+@utility tricolor-rule {
+  background: linear-gradient(
+    to right,
+    oklch(0.74 0.16 58) 0 33.33%,
+    oklch(0.99 0.004 250) 33.33% 66.66%,
+    oklch(0.5 0.14 148) 66.66% 100%
+  );
+}
+
+@layer base {
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-serif);
+    letter-spacing: -0.01em;
+  }
+}
