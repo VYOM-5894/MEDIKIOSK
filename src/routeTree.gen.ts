@@ -16,6 +16,7 @@ import { Route as StaffAuthRouteImport } from './routes/staff-auth'
 import { Route as AuthenticatedStaffRouteRouteImport } from './routes/_authenticated/_staff/route'
 import { Route as AuthenticatedAppointmentRouteImport } from './routes/_authenticated/appointment'
 import { Route as AuthenticatedIntakeRouteImport } from './routes/_authenticated/intake'
+import { Route as ApiChatRouteImport } from './routes/api/chat'
 import { Route as AuthenticatedStaffAdminRouteImport } from './routes/_authenticated/_staff/admin'
 import { Route as AuthenticatedStaffDemoRouteImport } from './routes/_authenticated/_staff/demo'
 import { Route as AuthenticatedStaffDoctorRouteImport } from './routes/_authenticated/_staff/doctor'
@@ -55,6 +56,11 @@ const AuthenticatedIntakeRoute = AuthenticatedIntakeRouteImport.update({
   path: '/intake',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const ApiChatRoute = ApiChatRouteImport.update({
+  id: '/api/chat',
+  path: '/api/chat',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedStaffAdminRoute = AuthenticatedStaffAdminRouteImport.update({
   id: '/admin',
   path: '/admin',
@@ -84,6 +90,7 @@ export interface FileRoutesByFullPath {
   '/staff-auth': typeof StaffAuthRoute
   '/appointment': typeof AuthenticatedAppointmentRoute
   '/intake': typeof AuthenticatedIntakeRoute
+  '/api/chat': typeof ApiChatRoute
   '/admin': typeof AuthenticatedStaffAdminRoute
   '/demo': typeof AuthenticatedStaffDemoRoute
   '/doctor': typeof AuthenticatedStaffDoctorRoute
@@ -95,6 +102,7 @@ export interface FileRoutesByTo {
   '/staff-auth': typeof StaffAuthRoute
   '/appointment': typeof AuthenticatedAppointmentRoute
   '/intake': typeof AuthenticatedIntakeRoute
+  '/api/chat': typeof ApiChatRoute
   '/admin': typeof AuthenticatedStaffAdminRoute
   '/demo': typeof AuthenticatedStaffDemoRoute
   '/doctor': typeof AuthenticatedStaffDoctorRoute
@@ -109,6 +117,7 @@ export interface FileRoutesById {
   '/_authenticated/_staff': typeof AuthenticatedStaffRouteRouteWithChildren
   '/_authenticated/appointment': typeof AuthenticatedAppointmentRoute
   '/_authenticated/intake': typeof AuthenticatedIntakeRoute
+  '/api/chat': typeof ApiChatRoute
   '/_authenticated/_staff/admin': typeof AuthenticatedStaffAdminRoute
   '/_authenticated/_staff/demo': typeof AuthenticatedStaffDemoRoute
   '/_authenticated/_staff/doctor': typeof AuthenticatedStaffDoctorRoute
@@ -122,6 +131,7 @@ export interface FileRouteTypes {
     | '/staff-auth'
     | '/appointment'
     | '/intake'
+    | '/api/chat'
     | '/admin'
     | '/demo'
     | '/doctor'
@@ -133,6 +143,7 @@ export interface FileRouteTypes {
     | '/staff-auth'
     | '/appointment'
     | '/intake'
+    | '/api/chat'
     | '/admin'
     | '/demo'
     | '/doctor'
@@ -146,6 +157,7 @@ export interface FileRouteTypes {
     | '/_authenticated/_staff'
     | '/_authenticated/appointment'
     | '/_authenticated/intake'
+    | '/api/chat'
     | '/_authenticated/_staff/admin'
     | '/_authenticated/_staff/demo'
     | '/_authenticated/_staff/doctor'
@@ -157,6 +169,7 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
   StaffAuthRoute: typeof StaffAuthRoute
+  ApiChatRoute: typeof ApiChatRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -209,6 +222,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/intake'
       preLoaderRoute: typeof AuthenticatedIntakeRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/api/chat': {
+      id: '/api/chat'
+      path: '/api/chat'
+      fullPath: '/api/chat'
+      preLoaderRoute: typeof ApiChatRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/_authenticated/_staff/admin': {
       id: '/_authenticated/_staff/admin'
@@ -281,6 +301,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
   StaffAuthRoute: StaffAuthRoute,
+  ApiChatRoute: ApiChatRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
