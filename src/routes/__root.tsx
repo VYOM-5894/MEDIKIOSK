@@ -155,7 +155,9 @@ function RootComponent() {
             <Outlet />
           </main>
         </div>
+        <Assistant />
         <Toaster />
+
       </MediKioskProvider>
     </QueryClientProvider>
   );
