@@ -47,8 +47,21 @@ const steps = [
 function Landing() {
   return (
     <div>
+      <div className="border-b border-border bg-accent/15">
+        <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-2 px-4 py-2 text-xs text-foreground lg:px-6">
+          <span className="bg-primary px-2 py-0.5 font-semibold uppercase tracking-wide text-primary-foreground">
+            Notice
+          </span>
+          <span>
+            Kiosk intake is now live at all OPD counters. Patients may also complete intake on a
+            mobile device before arrival.
+          </span>
+        </div>
+      </div>
+
       <section className="relative overflow-hidden border-b border-border bg-gradient-to-b from-primary/10 via-background to-background">
-        <div className="mx-auto grid max-w-7xl gap-10 px-4 py-20 lg:grid-cols-2 lg:px-6 lg:py-28">
+        <div className="mx-auto grid max-w-7xl gap-10 px-4 py-16 lg:grid-cols-2 lg:px-6 lg:py-24">
+
           <div>
             <span className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-primary">
               <Activity className="h-3.5 w-3.5" />
