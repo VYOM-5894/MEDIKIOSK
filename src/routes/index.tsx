@@ -83,7 +83,7 @@ function Landing() {
             </div>
           </div>
 
-          <div className="rounded-3xl border border-border bg-card p-6 shadow-lift">
+          <div className="rounded-none border-t-4 border-t-accent border border-border bg-card p-6 shadow-lift">
             <div className="flex items-center justify-between border-b border-border pb-4">
               <span className="text-sm font-semibold text-foreground">Live triage board</span>
               <span className="rounded-full bg-success/10 px-2 py-1 text-xs font-medium text-success">
@@ -91,7 +91,7 @@ function Landing() {
               </span>
             </div>
             <div className="mt-4 space-y-3">
-              <div className="rounded-xl border-l-4 border-l-emergency bg-emergency/5 p-4">
+              <div className="rounded-none border-l-4 border-l-emergency bg-emergency/5 p-4">
                 <div className="flex items-center gap-2 font-semibold text-emergency">
                   <Siren className="h-4 w-4" /> Emergency · OPD-214
                 </div>
@@ -99,13 +99,13 @@ function Landing() {
                   Chest pain radiating to left arm with sweating — escalated automatically.
                 </p>
               </div>
-              <div className="rounded-xl border-l-4 border-l-warning bg-warning/10 p-4">
+              <div className="rounded-none border-l-4 border-l-warning bg-warning/10 p-4">
                 <div className="font-semibold text-foreground">Priority · OPD-219</div>
                 <p className="mt-1 text-sm text-muted-foreground">
                   Diabetes follow-up, HbA1c 9.1% extracted from uploaded lab report.
                 </p>
               </div>
-              <div className="rounded-xl border-l-4 border-l-success bg-success/5 p-4">
+              <div className="rounded-none border-l-4 border-l-success bg-success/5 p-4">
                 <div className="font-semibold text-foreground">Routine · OPD-223</div>
                 <p className="mt-1 text-sm text-muted-foreground">
                   AYUSH stream — Dashavidha Pariksha completed in Tamil.
@@ -120,8 +120,8 @@ function Landing() {
         <h2 className="text-3xl font-bold tracking-tight text-foreground">How it works</h2>
         <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
           {steps.map((s, i) => (
-            <div key={s.title} className="rounded-2xl border border-border bg-card p-5 shadow-soft">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
+            <div key={s.title} className="rounded-none border border-border bg-card p-5 shadow-soft">
+              <div className="flex h-10 w-10 items-center justify-center rounded-none bg-primary/10 text-primary">
                 <s.icon className="h-5 w-5" />
               </div>
               <div className="mt-4 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
