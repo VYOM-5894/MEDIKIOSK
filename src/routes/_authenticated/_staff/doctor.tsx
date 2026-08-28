@@ -43,7 +43,7 @@ function DoctorPage() {
   const queue = useMemo(
     () =>
       [...patients]
-        .filter((p) => p.status !== "in-intake")
+        .filter((p) => p.status === "awaiting-doctor")
         .sort((a, b) => order[a.priority] - order[b.priority]),
     [patients],
   );

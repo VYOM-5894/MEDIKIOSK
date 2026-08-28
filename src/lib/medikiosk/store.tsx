@@ -71,6 +71,7 @@ export function MediKioskProvider({ children }: { children: ReactNode }) {
         setState((s) => ({
           ...s,
           patients: parsed.patients?.length ? parsed.patients : seedPatients(),
+          currentId: parsed.currentId ?? null,
           a11y: parsed.a11y ?? { large: false, contrast: false },
         }));
       } else {
@@ -83,7 +84,10 @@ export function MediKioskProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (!hydrated) return;
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({ patients: state.patients, a11y: state.a11y }));
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify({ patients: state.patients, currentId: state.currentId, a11y: state.a11y }),
+    );
     document.documentElement.classList.toggle("a11y-large", state.a11y.large);
     document.documentElement.classList.toggle("a11y-contrast", state.a11y.contrast);
   }, [state.patients, state.a11y, hydrated]);

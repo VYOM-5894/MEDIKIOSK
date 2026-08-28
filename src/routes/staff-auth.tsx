@@ -1,6 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useCallback, useEffect, useState } from "react";
-import { KeyRound, Loader2, Stethoscope } from "lucide-react";
+import { Eye, EyeOff, KeyRound, Loader2, Stethoscope } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -53,6 +53,7 @@ function StaffAuthPage() {
   const [busy, setBusy] = useState(false);
   const [needsCode, setNeedsCode] = useState(false);
   const [checking, setChecking] = useState(true);
+  const [showPassword, setShowPassword] = useState(false);
 
   const evaluate = useCallback(async () => {
     const { data } = await supabase.auth.getUser();
@@ -77,7 +78,10 @@ function StaffAuthPage() {
   async function handleSignIn(e: React.FormEvent) {
     e.preventDefault();
     setBusy(true);
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    const { error } = await supabase.auth.signInWithPassword({
+      email: email.trim().toLowerCase(),
+      password,
+    });
     if (error) {
       setBusy(false);
       toast.error(error.message);
@@ -90,7 +94,7 @@ function StaffAuthPage() {
   async function handleRedeem(e: React.FormEvent) {
     e.preventDefault();
     setBusy(true);
-    const { data, error } = await supabase.rpc("redeem_staff_code", { _code: code.toUpperCase() });
+    const { data, error } = await supabase.rpc("redeem_staff_code", { _code: code.trim().toUpperCase() });
     setBusy(false);
     if (error) {
       toast.error("That access code is not valid.");
@@ -107,9 +111,9 @@ function StaffAuthPage() {
           <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-foreground text-background">
             <Stethoscope className="h-6 w-6" />
           </div>
-          <h1 className="mt-4 text-2xl font-bold tracking-tight">Staff portal</h1>
+          <h1 className="mt-4 text-2xl font-bold tracking-tight">Staff portal sign in</h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            Doctors, triage nurses and administrators only.
+            One secure sign in for doctors, triage nurses and administrators.
           </p>
         </div>
 
@@ -122,10 +126,10 @@ function StaffAuthPage() {
           ) : needsCode ? (
             <>
               <CardHeader className="pb-2">
-                <CardTitle className="text-lg">Enter your clinical access code</CardTitle>
+                  <CardTitle className="text-lg">Step 2: unlock your clinical role</CardTitle>
                 <CardDescription>
-                  Your account is signed in but has no clinical role yet. Ask your administrator for
-                  a code.
+                   You are signed in. Enter the one-time code provided by your administrator to open the
+                   correct staff workspace.
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -135,9 +139,10 @@ function StaffAuthPage() {
                     <Input
                       id="staff-code"
                       required
+                      autoFocus
                       placeholder="MEDIKIOSK-DOCTOR-2026"
                       value={code}
-                      onChange={(e) => setCode(e.target.value)}
+                      onChange={(e) => setCode(e.target.value.toUpperCase())}
                       className="font-mono uppercase"
                     />
                   </div>
@@ -155,8 +160,8 @@ function StaffAuthPage() {
           ) : (
             <>
               <CardHeader className="pb-2">
-                <CardTitle className="text-lg">Clinical sign in</CardTitle>
-                <CardDescription>Use your hospital account credentials.</CardDescription>
+                  <CardTitle className="text-lg">Step 1: sign in</CardTitle>
+                  <CardDescription>Use your hospital email and password. You will only enter the access code once.</CardDescription>
               </CardHeader>
               <CardContent>
                 <form className="space-y-4" onSubmit={handleSignIn}>
@@ -166,6 +171,7 @@ function StaffAuthPage() {
                       id="staff-email"
                       type="email"
                       autoComplete="email"
+                      autoFocus
                       required
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
@@ -173,14 +179,27 @@ function StaffAuthPage() {
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="staff-password">Password</Label>
-                    <Input
-                      id="staff-password"
-                      type="password"
-                      autoComplete="current-password"
-                      required
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                    />
+                    <div className="relative">
+                      <Input
+                        id="staff-password"
+                        type={showPassword ? "text" : "password"}
+                        autoComplete="current-password"
+                        required
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        className="pr-12"
+                      />
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon"
+                        aria-label={showPassword ? "Hide password" : "Show password"}
+                        className="absolute right-1 top-1/2 -translate-y-1/2"
+                        onClick={() => setShowPassword((visible) => !visible)}
+                      >
+                        {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                      </Button>
+                    </div>
                   </div>
                   <Button type="submit" className="w-full" disabled={busy}>
                     {busy && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}

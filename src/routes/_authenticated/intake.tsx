@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import { ArrowLeft, ArrowRight, CheckCircle2, FileScan, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -220,6 +220,7 @@ function ConversationStep({ onDone }: { onDone: () => void }) {
   const [typed, setTyped] = useState("");
   const [scale, setScale] = useState(5);
   const [voiceMode, setVoiceMode] = useState(false);
+  const [multiSelected, setMultiSelected] = useState<string[]>([]);
 
   const answers = useMemo(
     () => Object.fromEntries((patient?.answers ?? []).map((a) => [a.questionId, a.value])),
@@ -237,6 +238,11 @@ function ConversationStep({ onDone }: { onDone: () => void }) {
   );
   const question = useMemo(() => nextQuestion(plan, answers), [plan, answers]);
 
+  useEffect(() => {
+    const saved = question ? answers[question.id] : "";
+    setMultiSelected(saved ? saved.split(", ").filter(Boolean) : []);
+  }, [question?.id, answers]);
+
   const speech = useSpeech({
     lang: patient ? `${patient.language === "en" ? "en" : patient.language}-IN` : "en-IN",
     onResult: (text) => setTyped(text),
@@ -253,6 +259,18 @@ function ConversationStep({ onDone }: { onDone: () => void }) {
     setTyped("");
     setScale(5);
     if (patient.inputMode !== "voice" && voiceMode) updateCurrent({ inputMode: "voice" });
+  };
+
+  const toggleMultiOption = (option: string) => {
+    setMultiSelected((current) => {
+      if (option === "None" || option === "None of these") {
+        return current.includes(option) ? [] : [option];
+      }
+      const withoutNone = current.filter((item) => item !== "None" && item !== "None of these");
+      return withoutNone.includes(option)
+        ? withoutNone.filter((item) => item !== option)
+        : [...withoutNone, option];
+    });
   };
 
   if (!patient.chiefComplaint) {
@@ -313,7 +331,7 @@ function ConversationStep({ onDone }: { onDone: () => void }) {
           {question.hint ? <p className="text-sm text-muted-foreground">{question.hint}</p> : null}
         </CardHeader>
         <CardContent className="space-y-6">
-          {question.kind === "choice" || question.kind === "multi" ? (
+          {question.kind === "choice" ? (
             <div className="grid gap-3 sm:grid-cols-2">
               {(question.options ?? []).map((o) => (
                 <button
@@ -324,6 +342,49 @@ function ConversationStep({ onDone }: { onDone: () => void }) {
                   {o}
                 </button>
               ))}
+            </div>
+          ) : null}
+
+          {question.kind === "multi" ? (
+            <div className="space-y-4">
+              <p className="text-sm font-medium text-muted-foreground">Select all that apply</p>
+              <div className="grid gap-3 sm:grid-cols-2">
+                {(question.options ?? []).map((o) => {
+                  const selected = multiSelected.includes(o);
+                  return (
+                    <button
+                      key={o}
+                      type="button"
+                      aria-pressed={selected}
+                      onClick={() => toggleMultiOption(o)}
+                      className={cn(
+                        "flex min-h-14 items-center justify-between rounded-xl border p-4 text-left text-base font-medium transition-all",
+                        selected
+                          ? "border-primary bg-primary/10 text-primary ring-1 ring-primary"
+                          : "border-border bg-card text-foreground hover:-translate-y-0.5 hover:border-primary hover:bg-primary/5",
+                      )}
+                    >
+                      <span>{o}</span>
+                      <span
+                        className={cn(
+                          "flex h-5 w-5 shrink-0 items-center justify-center rounded-sm border text-xs",
+                          selected ? "border-primary bg-primary text-primary-foreground" : "border-input",
+                        )}
+                      >
+                        {selected ? "✓" : ""}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+              <Button
+                size="lg"
+                className="w-full"
+                onClick={() => record(multiSelected.join(", "))}
+                disabled={multiSelected.length === 0}
+              >
+                Confirm selection
+              </Button>
             </div>
           ) : null}
 
@@ -491,9 +552,9 @@ function ReviewStep({ onBack }: { onBack: () => void }) {
       intakeSeconds: seconds,
       abdm: { ...patient.abdm, recordReady: true },
     });
-    setCurrent(null);
+    setCurrent(patient.id);
     toast.success("Summary sent to your doctor.");
-    navigate({ to: "/doctor" });
+    navigate({ to: "/appointment" });
   };
 
   return (
