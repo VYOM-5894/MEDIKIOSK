@@ -123,42 +123,44 @@
 }
 
 :root {
-  --radius: 0.875rem;
+  /* Government-of-India style: sharp corners, navy blue, saffron + green accents */
+  --radius: 0.25rem;
 
-  --background: oklch(0.985 0.006 240);
-  --foreground: oklch(0.23 0.035 250);
-  --surface: oklch(0.965 0.012 235);
-  --surface-foreground: oklch(0.23 0.035 250);
+  --background: oklch(0.985 0.004 250);
+  --foreground: oklch(0.21 0.03 258);
+  --surface: oklch(0.955 0.012 250);
+  --surface-foreground: oklch(0.21 0.03 258);
 
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.23 0.035 250);
+  --card-foreground: oklch(0.21 0.03 258);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.23 0.035 250);
+  --popover-foreground: oklch(0.21 0.03 258);
 
-  --primary: oklch(0.52 0.16 251);
-  --primary-foreground: oklch(0.99 0.005 240);
-  --secondary: oklch(0.94 0.024 220);
-  --secondary-foreground: oklch(0.3 0.06 250);
+  --primary: oklch(0.34 0.11 264);
+  --primary-foreground: oklch(0.99 0.004 250);
+  --secondary: oklch(0.93 0.02 255);
+  --secondary-foreground: oklch(0.28 0.06 260);
 
-  --muted: oklch(0.955 0.012 235);
-  --muted-foreground: oklch(0.52 0.03 250);
-  --accent: oklch(0.63 0.11 195);
-  --accent-foreground: oklch(0.99 0.005 240);
+  --muted: oklch(0.95 0.01 250);
+  --muted-foreground: oklch(0.47 0.03 258);
+  --accent: oklch(0.74 0.16 58);
+  --accent-foreground: oklch(0.24 0.05 60);
 
-  --destructive: oklch(0.577 0.222 25);
-  --destructive-foreground: oklch(0.99 0.005 240);
-  --emergency: oklch(0.577 0.222 25);
-  --emergency-foreground: oklch(0.99 0.005 240);
-  --success: oklch(0.62 0.14 158);
-  --success-foreground: oklch(0.99 0.005 240);
-  --warning: oklch(0.75 0.15 75);
-  --warning-foreground: oklch(0.25 0.05 75);
-  --ayush: oklch(0.55 0.13 145);
-  --ayush-foreground: oklch(0.99 0.005 240);
+  --destructive: oklch(0.52 0.21 27);
+  --destructive-foreground: oklch(0.99 0.004 250);
+  --emergency: oklch(0.52 0.21 27);
+  --emergency-foreground: oklch(0.99 0.004 250);
+  --success: oklch(0.5 0.14 148);
+  --success-foreground: oklch(0.99 0.004 250);
+  --warning: oklch(0.74 0.16 58);
+  --warning-foreground: oklch(0.24 0.05 60);
+  --ayush: oklch(0.48 0.13 145);
+  --ayush-foreground: oklch(0.99 0.004 250);
 
-  --border: oklch(0.9 0.015 240);
-  --input: oklch(0.9 0.015 240);
-  --ring: oklch(0.52 0.16 251);
+  --border: oklch(0.86 0.015 250);
+  --input: oklch(0.82 0.015 250);
+  --ring: oklch(0.34 0.11 264);
+
 
   --chart-1: oklch(0.52 0.16 251);
   --chart-2: oklch(0.63 0.11 195);
